@@ -40,6 +40,8 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', userSchema);
 
+app.get("/", (req, res) => res.send("Express on Vercel"));
+
 // GET endpoint to fetch a specific user by email
 app.get('/api/users/:email', async (req, res) => {
   try {

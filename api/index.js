@@ -47,12 +47,12 @@ app.get('/api/users/:email', async (req, res) => {
   try {
     const user = await User.findOne({ email: req.params.email }); // Find user by email
     if (user) {
-      res.json(user); // Send user data to the client
+      res.send(user); // Send user data to the client
     } else {
-      res.status(404).json({ message: 'User not found' });
+      res.status(404).send({ message: 'User not found' });
     }
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).send({ message: error.message });
   }
 });
 
@@ -66,12 +66,12 @@ app.put('/api/users/:email', async (req, res) => {
     );
 
     if (updatedUser) {
-      res.json(updatedUser); // Send the updated user data to the client
+      res.send(updatedUser); // Send the updated user data to the client
     } else {
-      res.status(404).json({ message: 'User not found' });
+      res.status(404).send({ message: 'User not found' });
     }
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(400).send({ message: error.message });
   }
 });
 
@@ -79,9 +79,9 @@ app.post('/api/users', async (req, res) => {
   const newUser = new User(req.body); // Create a new User document from the request body
   try {
     const savedUser = await newUser.save(); // Save the new user to the collection
-    res.status(201).json(savedUser);
+    res.status(201).send(savedUser);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(400).send({ message: error.message });
   }
 });
 

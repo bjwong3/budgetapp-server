@@ -22,13 +22,9 @@ connection.once('open', () => {
 const userSchema = new mongoose.Schema({
   email: String,
   income: Number,
-	monthlyExpense: {
+	budgets: {
     type: Map,
-    of: Number
-  },
-	addExpense: {
-    type: Map,
-    of: Number
+    of: Object
   },
   lastAccessedYear: Number,
   lastAccessedMonth: Number,

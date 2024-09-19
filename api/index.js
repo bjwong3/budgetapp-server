@@ -21,9 +21,8 @@ connection.once('open', () => {
 // Define a Mongoose schema for the users collection
 const userSchema = new mongoose.Schema({
   email: String,
-  income: Number,
 	budgets: {
-    type: Map,
+    type: Array,
     of: Object
   },
   lastAccessedYear: Number,

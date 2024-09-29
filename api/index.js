@@ -26,7 +26,12 @@ const userSchema = new mongoose.Schema({
     of: Object
   },
   lastAccessedYear: Number,
-  lastAccessedMonth: Number,
+  lastAccessedMonth: Number
+});
+
+// Define a Mongoose schema for the history collection
+const historySchema = new mongoose.Schema({
+  email: String,
   history: {
     type: Map,
     of: Object
@@ -34,6 +39,7 @@ const userSchema = new mongoose.Schema({
 });
 
 const User = mongoose.model('User', userSchema);
+const History = mongoose.model('History', historySchema);
 
 app.get("/", (req, res) => res.send("Express on Vercel"));
 
@@ -75,6 +81,49 @@ app.post('/api/users', async (req, res) => {
   try {
     const savedUser = await newUser.save(); // Save the new user to the collection
     res.status(201).send(savedUser);
+  } catch (error) {
+    res.status(400).send({ message: error.message });
+  }
+});
+
+// GET endpoint to fetch a specific history by email
+app.get('/api/history/:email', async (req, res) => {
+  try {
+    const history = await History.findOne({ email: req.params.email }); // Find user by email
+    if (history) {
+      res.send(history); // Send history data to the client
+    } else {
+      res.status(404).send({ message: 'History not found' });
+    }
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+});
+
+// PUT endpoint to update a specific history by email
+app.put('/api/history/:email', async (req, res) => {
+  try {
+    const updatedHistory = await History.findOneAndUpdate(
+      { email: req.params.email }, // Find history by email
+      req.body,                    // Update with request body data
+      { new: true }                // Return the updated document
+    );
+
+    if (updatedHistory) {
+      res.send(updatedHistory); // Send the updated history data to the client
+    } else {
+      res.status(404).send({ message: 'History not found' });
+    }
+  } catch (error) {
+    res.status(400).send({ message: error.message });
+  }
+});
+
+app.post('/api/history', async (req, res) => {
+  const newHistory = new History(req.body); // Create a new History document from the request body
+  try {
+    const savedHistory = await newHistory.save(); // Save the new history to the collection
+    res.status(201).send(savedHistory);
   } catch (error) {
     res.status(400).send({ message: error.message });
   }

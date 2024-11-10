@@ -57,6 +57,20 @@ app.get('/api/users/:email', async (req, res) => {
   }
 });
 
+// GET endpoint
+app.get('/api/test', async (req, res) => {
+  try {
+    const val = req.headers['value'];
+    if (val) {
+      res.send(val); // Send data to the client
+    } else {
+      res.status(404).send({ message: 'Value not found' });
+    }
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+});
+
 // PUT endpoint to update a specific user by email
 app.put('/api/users/:email', async (req, res) => {
   try {

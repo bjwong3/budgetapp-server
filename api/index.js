@@ -60,6 +60,7 @@ app.get('/api/users/:email', async (req, res) => {
 // GET endpoint
 app.get('/api/test', async (req, res) => {
   try {
+    res.set('Content-Type', 'text/plain');
     const val = req.headers['value'];
     if (val) {
       res.send(val); // Send data to the client
